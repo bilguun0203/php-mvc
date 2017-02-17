@@ -17,4 +17,7 @@ $views = array(
 	Route::get('page', 'page@PagesController'),
 	Route::get('page/{id}', 'page@PagesController'),
 	Route::get('page/{id}/{asd}', 'page@PagesController'),
+	Route::get('db', 'dbDummy@PagesController'),
+	Route::get('testdb', 'pageDB@PagesController'),
+	Route::get('testdb/{page}', 'pageDB@PagesController'),
 );

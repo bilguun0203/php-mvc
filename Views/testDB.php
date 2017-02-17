@@ -5,28 +5,29 @@
 	<meta name="viewport"
 		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Page Test</title>
+	<title>DB test</title>
 	<style>
 		body {
 			font-family: "Noto Sans", sans-serif;
-            background-color: #EEEEEE;
-            color: #212121;
+			background-color: #EEEEEE;
+			color: #212121;
 		}
 		.title {
 			text-align: center;
 		}
-        p {
-            text-align: center;
-        }
+		p {
+			text-align: center;
+		}
 	</style>
 </head>
 <body>
 
 <h1 class="title">TEST PAGE</h1>
-
-<p><?php if(isset($id)) echo $id; ?></p>
-<p><?php if(isset($test)) echo $test; ?></p>
-<p><?php print_r($db_test); ?></p>
-
+<p><?php echo "Хуудас " . $total_page . " - " . $page; ?></p>
+<ul>
+	<?php foreach ($test as $item) { ?>
+	<li><?php echo $item['id'] . ". " . $item['name'] . " - " . $item['created'] . " - " . $item['modified']; ?></li>
+	<?php } ?>
+</ul>
 </body>
 </html>
