@@ -22,6 +22,12 @@
 //	}
 //});
 
+/**
+ * Class Autoloader
+ * namespace-д бичигдсэн байрлалаар тухайн классыг уншина
+ * Жишээ нь: 'use App\System\Route' нь App/System/Route.php -г дуудна
+ */
+
 class Autoloader {
 	static public function loader($className) {
 		$filename = BASE . str_replace('\\', '/', $className) . ".php";

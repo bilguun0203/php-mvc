@@ -52,8 +52,8 @@ class Config {
 
 
 	/**
-	 * @param $key
-	 * @return mixed
+	 * @param $key - тохиргооны нэр
+	 * @return mixed - тохиргооны утга
 	 */
 	public function getConfig($key){
 		return $this->config[$key];
