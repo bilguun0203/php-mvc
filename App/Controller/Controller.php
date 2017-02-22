@@ -20,6 +20,15 @@ class Controller {
 	}
 
 	public static function index() {
-		return View::loadView('welcome');
+		/**
+		 * Views хавтаснаас welcome.php-г уншина
+		 *
+		 * $data хүснэгт доторх элемент харагдацад хувьсагч болон очино.
+		 * Жишээ нь: 'title' => 'Welcome' нь welcome.php-д $title болно.
+		 */
+		$data = array(
+			'title' => 'Welcome',
+		);
+		return View::loadView('welcome', $data);
 	}
 }
