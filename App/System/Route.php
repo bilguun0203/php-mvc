@@ -37,7 +37,7 @@ class Route
 				if($url[$i] == $GET[$i]){
 				}
 				elseif (preg_match( '/{(.*)}/', $url[$i], $match)){
-					self::$args[$j] = $GET[$i];
+					self::$args[$j] = urldecode($GET[$i]);
 					$j++;
 				}
 				else return false;
