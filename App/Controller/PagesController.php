@@ -9,6 +9,7 @@
 
 use App\System\View;
 use App\Model\MyModel;
+use App\System\Helper;
 
 class PagesController
 {
@@ -53,6 +54,11 @@ class PagesController
 					echo 'user was created. Id=' . $id;
 		}
 		return true;
+	}
+
+	// POST туршилт
+	public static function postTest($post = array()){
+		return Helper::redirect('page/'.$post['name']);
 	}
 
 }

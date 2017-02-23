@@ -29,5 +29,9 @@
 	<li><?php echo $item['id'] . ". " . $item['name'] . " - " . $item['created'] . " - " . $item['modified']; ?></li>
 	<?php } ?>
 </ul>
+<form action="<?php echo \App\System\Helper::url('postTest'); ?>" method="post">
+    <input type="text" name="name">
+    <input type="submit" value="Submit">
+</form>
 </body>
 </html>
