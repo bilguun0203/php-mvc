@@ -9,6 +9,8 @@
 
 ####Whoops
 
+Хөгжүүлэлтийн үед шаардлагатай
+
 Composer ашиглан суулгах
 
 `composer require filp/whoops`
