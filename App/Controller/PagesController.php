@@ -42,6 +42,21 @@ class PagesController
 		return View::loadView('testDB', $data);
 	}
 
+	public static function formDB(){
+		$MyModel = new MyModel();
+		$table = $MyModel->db->get('table1');
+		$data = array(
+			'data' => $table,
+		);
+		return View::loadView('formDB', $data);
+	}
+
+	public static function formSubmit($post = array()){
+		$Model = new MyModel();
+		$Model->db->insert('table1', $post);
+		return Helper::redirect('formdb');
+	}
+
 	public static function dbDummy(){
 		$MyModel = new MyModel();
 		for($i=50; $i>0; $i--){

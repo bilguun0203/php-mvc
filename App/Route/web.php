@@ -33,4 +33,6 @@ $views = array(
 	Route::get('testdb', 'pageDB@PagesController'),
 	Route::get('testdb/{page}', 'pageDB@PagesController'),
 	Route::post('postTest', 'postTest@PagesController'),
+	Route::get('formdb', 'formDB@PagesController'),
+	Route::post('formdb/submit', 'formSubmit@PagesController'),
 );
