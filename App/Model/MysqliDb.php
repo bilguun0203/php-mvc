@@ -2329,6 +2329,38 @@ class MysqliDb
                     $this->_query .= $this->_buildPair ($operator, $val);
         }
     }
+
+	/**
+	 * -------------------------------------------
+	 * Table Manipulation Section
+	 * -------------------------------------------
+	 */
+
+	//TODO: Хүснэгт үүсгэх, устгах, хоослох, засварлах функцуудыг зарлаж, тодорхойлох
+    public function timestamp() {
+
+	}
+
+	public function tableName($tableName) {
+    	$this->_query = "CREATE TABLE " . $tableName . " ";
+	}
+
+    public function createTable($tableName, array $columns) {
+
+	}
+
+	public function int($columnName, $length = 11, $constraint = "") {
+    	$this->_query .= $columnName . " INT($length) ";
+    	if($constraint != ""){
+    		$constraint = is_array($constraint) ? implode(" ", $constraint) : $constraint;
+
+    		$this->_query .= $constraint;
+		}
+	}
+
+	public function primaryKey() {
+
+	}
 }
 
 // END class

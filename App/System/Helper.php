@@ -41,4 +41,23 @@ class Helper
 		return 1;
 	}
 
+	/**
+	 * @param $name
+	 * @param string $value
+	 * @return bool
+	 */
+	public static function session($name, $value = ''){
+		if($value == ''){
+			if(isset($_SESSION[$name])) {
+				return $_SESSION[$name];
+			}
+			else {
+				return false;
+			}
+		} else {
+			$_SESSION[$name] = $value;
+			return true;
+		}
+	}
+
 }

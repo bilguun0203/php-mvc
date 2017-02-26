@@ -57,6 +57,22 @@ class PagesController
 		return Helper::redirect('formdb');
 	}
 
+	public static function formDelete($id){
+		$Model = new MyModel();
+		$Model->db->where('id', $id)->delete('table1');
+//		$Model->db->delete('table1');
+
+//		$table = new MyModel();
+//		$table->tableName('post');
+//		$table->int('id', 'AUTO_INCREMENT')->primaryKey();
+//		$table->string('name', 'NOT NULL');
+//		$table->text('body', 'NULL');
+//		$table->timestamp();
+//		$table->createTable();
+
+		return Helper::redirect('formdb');
+	}
+
 	public static function dbDummy(){
 		$MyModel = new MyModel();
 		for($i=50; $i>0; $i--){
