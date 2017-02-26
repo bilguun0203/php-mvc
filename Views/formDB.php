@@ -25,7 +25,7 @@
 <h1 class="title">TEST FORM</h1>
 <ul>
 	<?php foreach ($data as $item) { ?>
-		<li><?php echo $item['id'] . ". " . $item['name'] . " - " . $item['created'] . " - " . $item['modified']; ?></li>
+		<li><?php echo $item['id'] . ". " . $item['name'] . " - " . $item['created'] . " - " . $item['modified']; ?> -- <a href="<?php echo \App\System\Helper::url('formdb/delete/'.$item['id']); ?>">Delete</a></li>
 	<?php } ?>
 </ul>
 <form action="<?php echo \App\System\Helper::url('formdb/submit'); ?>" method="post">
