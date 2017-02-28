@@ -45,7 +45,17 @@ class PagesController
 	public static function formDB(){
 		$MyModel = new MyModel();
 		$table = $MyModel->db->get('table1');
+
+		$create = new MyModel();
+//		$db = $create->db;
+		$text = $create->db->table('category_post')
+			->int('id', 'AUTO_INCREMENT')->primaryKey()
+			->int('category_id', 'NOT NULL')->foreignKey('category(id)', 'postCat')
+			->int('post_id', 'NOT NULL')->foreignKey('post(id)', 'postId')
+			->createTable();
+
 		$data = array(
+			'text' => $text,
 			'data' => $table,
 		);
 		return View::loadView('formDB', $data);
@@ -61,14 +71,6 @@ class PagesController
 		$Model = new MyModel();
 		$Model->db->where('id', $id)->delete('table1');
 //		$Model->db->delete('table1');
-
-//		$table = new MyModel();
-//		$table->tableName('post');
-//		$table->int('id', 'AUTO_INCREMENT')->primaryKey();
-//		$table->string('name', 'NOT NULL');
-//		$table->text('body', 'NULL');
-//		$table->timestamp();
-//		$table->createTable();
 
 		return Helper::redirect('formdb');
 	}

@@ -23,6 +23,7 @@
 <body>
 
 <h1 class="title">TEST FORM</h1>
+<code><?php print_r($text); ?></code>
 <ul>
 	<?php foreach ($data as $item) { ?>
 		<li><?php echo $item['id'] . ". " . $item['name'] . " - " . $item['created'] . " - " . $item['modified']; ?> -- <a href="<?php echo \App\System\Helper::url('formdb/delete/'.$item['id']); ?>">Delete</a></li>
