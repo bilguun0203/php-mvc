@@ -48,6 +48,7 @@ class PagesController
 
 		$create = new MyModel();
 		$db = $create->db;
+		$text = NULL;
 //		$text = $create->db->table('category_post')
 //			->int('id', 'AUTO_INCREMENT')->primaryKey()
 //			->int('category_id', 'NOT NULL')->foreignKey('category(id)', 'postCat')
@@ -55,6 +56,11 @@ class PagesController
 //			->createTable();
 //		$text = $create->db->table('category_post')->drop();
 //		$text = $create->db->table('category_post')->truncate();
+
+//		$text = $create->db->table('post')->addColumn()->string('about','DEFAULT NULL')->alterTable();
+//		$text = $create->db->table('post')->modifyColumn()->string('about',"DEFAULT 'default text' NOT NULL")->alterTable();
+//		$text = $create->db->table('post')->dropColumn('about')->alterTable();
+//		$text = $create->db->table('post')->dropIndex('about')->alterTable();
 
 		$data = array(
 			'text' => $text,

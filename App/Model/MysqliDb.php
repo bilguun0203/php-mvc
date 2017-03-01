@@ -2417,8 +2417,57 @@ class MysqliDb
 		return $stmt;
 	}
 
+	/**
+	 * Хүснэгт өөрчлөх, засварлах
+	 * Энэ функцын өмнө заавал доорх дөрвөн функцын аль нэг дуудагдах ёстой.
+	 * @return mixed
+	 */
 	public function alterTable() {
+		$this->_tableQuery = rtrim($this->_tableQuery, ',');
+		$stmt = $this->queryUnprepared($this->_tableQuery);
+		$this->tableReset();
+		return $stmt;
+	}
 
+	/**
+	 * Багана нэмэх
+	 * Энэ функцын араас багана тодорхойлох функцуудыг дуудах шаардлагатай. /int(),string().../
+	 * @return $this
+	 */
+	public function addColumn() {
+		$this->_tableQuery = "ALTER TABLE " . $this->_tableName . " ADD ";
+		return $this;
+	}
+
+	/**
+	 * Багана устгах
+	 * @param $columnName - Баганын нэр
+	 * @return $this
+	 */
+	public function dropColumn($columnName) {
+		$this->_tableQuery = "ALTER TABLE " . $this->_tableName . " DROP COLUMN " . $columnName;
+		return $this;
+	}
+
+	/**
+	 * Багана засварлах
+	 * Энэ функцын араас багана тодорхойлох функцуудыг дуудах шаардлагатай
+	 * бөгөөд баганы нэрний параметрт засварлах баганын нэрийг бичнэ. /int(),string().../
+	 * @return $this
+	 */
+	public function modifyColumn() {
+		$this->_tableQuery = "ALTER TABLE " . $this->_tableName . " MODIFY COLUMN ";
+		return $this;
+	}
+
+	/**
+	 * Index устгах
+	 * @param $indexName - Index-ийн нэр
+	 * @return $this
+	 */
+	public function dropIndex($indexName) {
+		$this->_tableQuery = "ALTER TABLE " . $this->_tableName . " DROP INDEX " . $indexName;
+		return $this;
 	}
 
 	/**
