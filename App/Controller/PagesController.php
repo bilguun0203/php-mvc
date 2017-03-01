@@ -47,12 +47,14 @@ class PagesController
 		$table = $MyModel->db->get('table1');
 
 		$create = new MyModel();
-//		$db = $create->db;
-		$text = $create->db->table('category_post')
-			->int('id', 'AUTO_INCREMENT')->primaryKey()
-			->int('category_id', 'NOT NULL')->foreignKey('category(id)', 'postCat')
-			->int('post_id', 'NOT NULL')->foreignKey('post(id)', 'postId')
-			->createTable();
+		$db = $create->db;
+//		$text = $create->db->table('category_post')
+//			->int('id', 'AUTO_INCREMENT')->primaryKey()
+//			->int('category_id', 'NOT NULL')->foreignKey('category(id)', 'postCat')
+//			->int('post_id', 'NOT NULL')->foreignKey('post(id)', 'postId')
+//			->createTable();
+//		$text = $create->db->table('category_post')->drop();
+//		$text = $create->db->table('category_post')->truncate();
 
 		$data = array(
 			'text' => $text,

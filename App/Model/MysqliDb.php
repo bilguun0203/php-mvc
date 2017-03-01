@@ -2385,23 +2385,16 @@ class MysqliDb
 	 * @return $this
 	 */
 	public function table($tableName) {
-    	$this->_primaryKey = "";
-    	$this->_foreignKey = "";
-    	$this->_lastcolumn = "";
-    	$this->_timestamp = false;
+		$this->tableReset();
 		$this->_tableName = self::$prefix.$tableName;
-    	$this->_tableQuery = "CREATE TABLE " . $this->_tableName . " ( ";
     	return $this;
 	}
 
 	/**
 	 * Хүснэгтийн тодорхойлолтын төгсгөл /Хүснэгт үүсгэх/
-	 * @return array|bool|string
+	 * @return mixed
 	 */
 	public function createTable() {
-    	if($this->tableExists($this->_tableName)){
-    		return false;
-		}
 		if($this->_timestamp){
     		$this->tmp = 1;
     		$this->datetime('created', 'NOT NULL DEFAULT CURRENT_TIMESTAMP');
@@ -2417,10 +2410,36 @@ class MysqliDb
 
 		$this->_tableQuery = rtrim($this->_tableQuery, ',');
 		$this->_tableQuery .= ")";
-		$this->_primaryKey = "";
-		$this->_foreignKey = "";
 
+		$this->_tableQuery = "CREATE TABLE " . $this->_tableName . " ( " . $this->_tableQuery;
 		$stmt = $this->queryUnprepared($this->_tableQuery);
+		$this->tableReset();
+		return $stmt;
+	}
+
+	public function alterTable() {
+
+	}
+
+	/**
+	 * Хүснэгт устгах
+	 * @return mixed
+	 */
+	public function drop() {
+		$this->_tableQuery = "DROP TABLE " . $this->_tableName;
+		$stmt = $this->queryUnprepared($this->_tableQuery);
+		$this->tableReset();
+		return $stmt;
+	}
+
+	/**
+	 * Хүснэгт хоослох
+	 * @return mixed
+	 */
+	public function truncate() {
+		$this->_tableQuery = "TRUNCATE TABLE " . $this->_tableName;
+		$stmt = $this->queryUnprepared($this->_tableQuery);
+		$this->tableReset();
 		return $stmt;
 	}
 
@@ -2435,6 +2454,17 @@ class MysqliDb
 			case 'modified': if($this->tmp==1)return true; else return false;
 			default: return true;
 		}
+	}
+
+	/**
+	 * Хүснэгтийн хувьсагчдыг хоослох
+	 */
+	private function tableReset(){
+		$this->_primaryKey = "";
+		$this->_foreignKey = "";
+		$this->_lastcolumn = "";
+		$this->_timestamp = false;
+		$this->_tableQuery = "";
 	}
 
 	/**
