@@ -2329,6 +2329,386 @@ class MysqliDb
                     $this->_query .= $this->_buildPair ($operator, $val);
         }
     }
+
+	/**
+	 * -------------------------------------------
+	 * Table Manipulation Section
+	 * -------------------------------------------
+	 * Хүснэгт үүсгэх
+	 * 1. @function table($tableName)
+	 * 2. Багана тодорхойлох - @function int(),float()... г.м
+	 * 3. Түлхүүр багана сонгох - @function primaryKey(), @function foreignKey()
+	 * 4. Хүснэгт үүсгэх - @function createTable()
+	 */
+
+	/**
+	 * Хүснэгтийн хүсэлт
+	 * @var string
+	 */
+	private $_tableQuery;
+
+	/**
+	 * Үндсэн түлхүүр баганын хүсэлтийн хэсэг
+	 * @var string
+	 */
+	private $_primaryKey = "";
+
+	/**
+	 * Гадаад түлхүүр баганын хүсэлтийн хэсэг
+	 * @var string
+	 */
+	private $_foreignKey = "";
+
+	/**
+	 * Сүүлд нэмсэн баганын нэр. Префиксгүй
+	 * @var string
+	 */
+	private $_lastcolumn = "";
+
+	/**
+	 * Үүсгэсэн, өөрчилсөн огнооны багана нэмэх эсэх
+	 * @var boolean
+	 */
+	private $_timestamp;
+
+	/**
+	 * Түр зуурын мэдээлэл хадгалах хувьсагч
+	 * @var int
+	 */
+	private $tmp = 0;
+
+	//TODO: Хүснэгт үүсгэх, устгах, хоослох, засварлах функцуудыг зарлаж, тодорхойлох
+
+	/**
+	 * Хүснэгтийн тодорхойлолт эхлэх
+	 * @param $tableName - Хүснэгтийн нэр
+	 * @return $this
+	 */
+	public function table($tableName) {
+		$this->tableReset();
+		$this->_tableName = self::$prefix.$tableName;
+    	return $this;
+	}
+
+	/**
+	 * Хүснэгтийн тодорхойлолтын төгсгөл /Хүснэгт үүсгэх/
+	 * @return mixed
+	 */
+	public function createTable() {
+		if($this->_timestamp){
+    		$this->tmp = 1;
+    		$this->datetime('created', 'NOT NULL DEFAULT CURRENT_TIMESTAMP');
+    		$this->datetime('modified', 'NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
+    		$this->tmp = 0;
+		}
+		if($this->_primaryKey != ""){
+    		$this->_tableQuery .= $this->_primaryKey . ",";
+		}
+		if($this->_foreignKey != ""){
+			$this->_tableQuery .= $this->_foreignKey . ",";
+		}
+
+		$this->_tableQuery = rtrim($this->_tableQuery, ',');
+		$this->_tableQuery .= ")";
+
+		$this->_tableQuery = "CREATE TABLE " . $this->_tableName . " ( " . $this->_tableQuery;
+		$stmt = $this->queryUnprepared($this->_tableQuery);
+		$this->tableReset();
+		return $stmt;
+	}
+
+	/**
+	 * Хүснэгт өөрчлөх, засварлах
+	 * Энэ функцын өмнө заавал доорх дөрвөн функцын аль нэг дуудагдах ёстой.
+	 * @return mixed
+	 */
+	public function alterTable() {
+		$this->_tableQuery = rtrim($this->_tableQuery, ',');
+		$stmt = $this->queryUnprepared($this->_tableQuery);
+		$this->tableReset();
+		return $stmt;
+	}
+
+	/**
+	 * Багана нэмэх
+	 * Энэ функцын араас багана тодорхойлох функцуудыг дуудах шаардлагатай. /int(),string().../
+	 * @return $this
+	 */
+	public function addColumn() {
+		$this->_tableQuery = "ALTER TABLE " . $this->_tableName . " ADD ";
+		return $this;
+	}
+
+	/**
+	 * Багана устгах
+	 * @param $columnName - Баганын нэр
+	 * @return $this
+	 */
+	public function dropColumn($columnName) {
+		$this->_tableQuery = "ALTER TABLE " . $this->_tableName . " DROP COLUMN " . $columnName;
+		return $this;
+	}
+
+	/**
+	 * Багана засварлах
+	 * Энэ функцын араас багана тодорхойлох функцуудыг дуудах шаардлагатай
+	 * бөгөөд баганы нэрний параметрт засварлах баганын нэрийг бичнэ. /int(),string().../
+	 * @return $this
+	 */
+	public function modifyColumn() {
+		$this->_tableQuery = "ALTER TABLE " . $this->_tableName . " MODIFY COLUMN ";
+		return $this;
+	}
+
+	/**
+	 * Index устгах
+	 * @param $indexName - Index-ийн нэр
+	 * @return $this
+	 */
+	public function dropIndex($indexName) {
+		$this->_tableQuery = "ALTER TABLE " . $this->_tableName . " DROP INDEX " . $indexName;
+		return $this;
+	}
+
+	/**
+	 * Хүснэгт устгах
+	 * @return mixed
+	 */
+	public function drop() {
+		$this->_tableQuery = "DROP TABLE " . $this->_tableName;
+		$stmt = $this->queryUnprepared($this->_tableQuery);
+		$this->tableReset();
+		return $stmt;
+	}
+
+	/**
+	 * Хүснэгт хоослох
+	 * @return mixed
+	 */
+	public function truncate() {
+		$this->_tableQuery = "TRUNCATE TABLE " . $this->_tableName;
+		$stmt = $this->queryUnprepared($this->_tableQuery);
+		$this->tableReset();
+		return $stmt;
+	}
+
+	/**
+	 * Баганын нэрэнд орж болохгүй үгийг шалгах
+	 * @param $columnName - Баганын нэр
+	 * @return bool
+	 */
+	public function checkColumn($columnName){
+		switch ($columnName) {
+			case 'created': if($this->tmp==1)return true; else return false;
+			case 'modified': if($this->tmp==1)return true; else return false;
+			default: return true;
+		}
+	}
+
+	/**
+	 * Хүснэгтийн хувьсагчдыг хоослох
+	 */
+	private function tableReset(){
+		$this->_primaryKey = "";
+		$this->_foreignKey = "";
+		$this->_lastcolumn = "";
+		$this->_timestamp = false;
+		$this->_tableQuery = "";
+	}
+
+	/**
+	 * Бүхэл тоон төрлийн багана нэмэх
+	 * @param $columnName - Баганын нэр
+	 * @param string $constraint - Шаардлага
+	 * @param string $length - Урт
+	 * @param string $type - Төрөл int|tiny|small|medium|big
+	 * @return $this|bool
+	 */
+	public function int($columnName, $constraint = "", $length = '', $type = 'int') {
+		if(!$this->checkColumn($columnName)){
+			return false;
+		}
+		switch ($type) {
+			case 'int':$type = 'INT';break;
+			case 'tiny':$type = 'TINYINT';break;
+			case 'small':$type = 'SMALLINT';break;
+			case 'medium':$type = 'MEDIUMINT';break;
+			case 'big':$type = 'BIGINT';break;
+			default: $type = 'INT';break;
+		}
+    	$this->_tableQuery .= $columnName . " $type";
+		if($length!=''){
+			$this->_tableQuery .= "($length)";
+		}
+		$this->_tableQuery .= " ";
+		$this->datatypeSub($columnName, $constraint);
+		return $this;
+	}
+
+	/**
+	 * Хөвөгч таслалтай тоон төрлийн багана нэмэх
+	 * @param $columnName - Баганын нэр
+	 * @param string $constraint - Шаардлага
+	 * @param string $length - Урт
+	 * @param string $type - Төрөл float|double|decimal. double төрөл асуудалтай!
+	 * @return $this|bool
+	 */
+	public function float($columnName, $constraint = "", $length = '', $type = 'float') {
+		if(!$this->checkColumn($columnName)){
+			return false;
+		}
+		switch ($type) {
+			case 'float':$type = 'FLOAT';break;
+			case 'double':$type = 'DOUBLE';break;
+			case 'decimal':$type = 'DECIMAL';break;
+			default: $type = 'FLOAT';break;
+		}
+		$this->_tableQuery .= $columnName . " $type";
+		if($length!=''){
+			$this->_tableQuery .= "($length)";
+		}
+		$this->_tableQuery .= " ";
+		$this->datatypeSub($columnName, $constraint);
+		return $this;
+	}
+
+	/**
+	 * Тэмдэгт төрлийн багана нэмэх
+	 * @param $columnName - Баганын нэр
+	 * @param string $constraint - Шаардлага
+	 * @param int $length - Урт 1-255
+	 * @return $this|bool
+	 */
+	public function char($columnName, $constraint = "", $length = 1) {
+		if(!$this->checkColumn($columnName)){
+			return false;
+		}
+		if($length < 1 && $length > 255){
+			$length = 255;
+		}
+		$this->_tableQuery .= $columnName . " CHAR($length) ";
+		$this->datatypeSub($columnName, $constraint);
+		return $this;
+	}
+
+	/**
+	 * Хувьсах урттай тэмдэгт төрлийн багана нэмэх
+	 * @param $columnName - Баганын нэр
+	 * @param string $constraint - Шаардлага
+	 * @param int $length - Урт
+	 * @return $this|bool
+	 */
+	public function string($columnName, $constraint = "", $length = 255) {
+		if(!$this->checkColumn($columnName)){
+			return false;
+		}
+    	if($length < 1 && $length > 255){
+    		$length = 255;
+		}
+		$this->_tableQuery .= $columnName . " VARCHAR($length) ";
+		$this->datatypeSub($columnName, $constraint);
+		return $this;
+	}
+
+	/**
+	 * Урт тэмдэгт төрлийн багана нэмэх
+	 * @param $columnName - Баганын нэр
+	 * @param string $constraint - Шаардлага
+	 * @param string $length - Урт default|tiny|medium|long
+	 * @return $this|bool
+	 */
+	public function text($columnName, $constraint = "", $length = 'default') {
+		if(!$this->checkColumn($columnName)){
+			return false;
+		}
+		$type = 'TEXT';
+		switch ($length) {
+			case 'default': $type = 'TEXT';break;
+			case 'tiny': $type = 'TINYTEXT';break;
+			case 'medium': $type = 'MEDIUMTEXT';break;
+			case 'long': $type = 'LONGTEXT';break;
+		}
+		$this->_tableQuery .= $columnName . " $type ";
+		$this->datatypeSub($columnName, $constraint);
+		return $this;
+	}
+
+	/**
+	 * Огноо төрлийн багана нэмэх
+	 * @param $columnName - Баганын нэр
+	 * @param string $constraint - Шаардлага
+	 * @return $this|bool
+	 */
+	public function date($columnName, $constraint = "") {
+		if(!$this->checkColumn($columnName)){
+			return false;
+		}
+		$this->_tableQuery .= $columnName . " DATE ";
+		$this->datatypeSub($columnName, $constraint);
+		return $this;
+	}
+
+	/**
+	 * Огноо /цагтай/ төрлийн багана нэмэх
+	 * @param $columnName - Баганын нэр
+	 * @param string $constraint - Шаардлага
+	 * @return $this|bool
+	 */
+	public function datetime($columnName, $constraint = "") {
+		if(!$this->checkColumn($columnName)){
+			return false;
+		}
+		$this->_tableQuery .= $columnName . " DATETIME ";
+		$this->datatypeSub($columnName, $constraint);
+		return $this;
+	}
+
+	/**
+	 * Бүх өгөгдлийн төрөлд хийгдэх функц
+	 * @param $columnName - Баганын нэр
+	 * @param $constraint - Шаардлага
+	 */
+	private function datatypeSub($columnName, $constraint) {
+		if($constraint != ""){
+			$constraint = is_array($constraint) ? implode(" ", $constraint) : $constraint;
+			$this->_tableQuery .= $constraint;
+		}
+		$this->_tableQuery .= ",";
+		$this->_lastcolumn = $columnName;
+	}
+
+	/**
+	 * Үндсэн түлхүүр багана
+	 * Багана тодорхойлсны дараа дуудаж ашиглана
+	 * @return $this
+	 */
+	public function primaryKey() {
+    	$this->_primaryKey = "PRIMARY KEY ($this->_lastcolumn)";
+    	return $this;
+	}
+
+	/**
+	 * Гадаад түлхүүр багана
+	 * @param $references - Зааж буй хүснэгт, багана /Category(id)/
+	 * @param string $constraint - Нэр
+	 * @return $this
+	 */
+	public function foreignKey($references, $constraint = "") {
+    	if($constraint != "") {
+    		$this->_foreignKey .= "CONSTRAINT $constraint ";
+		}
+    	$this->_foreignKey .= "FOREIGN KEY ($this->_lastcolumn) REFERENCES ".self::$prefix.$references.",";
+    	return $this;
+	}
+
+	/**
+	 * Нэмсэн, өөрчилсөн огноог хадгалах багана нэмэх үйлдлийг энэ функцийг дуудсанаар зөвшөөрөх болно
+	 * @return $this
+	 */
+	public function timestamp(){
+    	$this->_timestamp = true;
+    	return $this;
+	}
 }
 
 // END class

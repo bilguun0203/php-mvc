@@ -14,7 +14,14 @@ use App\System\Route;
  * хувьсагчид тухайн функцийн параметр болж орно
  *
  * Контроллерийг дуудах
+ * функц@Контроллер
  * index@Controller - Controller класс доторх index функцийг дуудна
+ *
+ * GET
+ * Route::get(хаяг, контроллер);
+ *
+ * POST
+ * Route::post(хаяг, контроллер);
  *
  */
 $views = array(
@@ -25,4 +32,8 @@ $views = array(
 	Route::get('db', 'dbDummy@PagesController'),
 	Route::get('testdb', 'pageDB@PagesController'),
 	Route::get('testdb/{page}', 'pageDB@PagesController'),
+	Route::post('postTest', 'postTest@PagesController'),
+	Route::get('formdb', 'formDB@PagesController'),
+	Route::get('formdb/delete/{id}', 'formDelete@PagesController'),
+	Route::post('formdb/submit', 'formSubmit@PagesController'),
 );

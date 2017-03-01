@@ -9,6 +9,7 @@
 
 use App\System\View;
 use App\Model\MyModel;
+use App\System\Helper;
 
 class PagesController
 {
@@ -41,6 +42,47 @@ class PagesController
 		return View::loadView('testDB', $data);
 	}
 
+	public static function formDB(){
+		$MyModel = new MyModel();
+		$table = $MyModel->db->get('table1');
+
+		$create = new MyModel();
+		$db = $create->db;
+		$text = NULL;
+//		$text = $create->db->table('category_post')
+//			->int('id', 'AUTO_INCREMENT')->primaryKey()
+//			->int('category_id', 'NOT NULL')->foreignKey('category(id)', 'postCat')
+//			->int('post_id', 'NOT NULL')->foreignKey('post(id)', 'postId')
+//			->createTable();
+//		$text = $create->db->table('category_post')->drop();
+//		$text = $create->db->table('category_post')->truncate();
+
+//		$text = $create->db->table('post')->addColumn()->string('about','DEFAULT NULL')->alterTable();
+//		$text = $create->db->table('post')->modifyColumn()->string('about',"DEFAULT 'default text' NOT NULL")->alterTable();
+//		$text = $create->db->table('post')->dropColumn('about')->alterTable();
+//		$text = $create->db->table('post')->dropIndex('about')->alterTable();
+
+		$data = array(
+			'text' => $text,
+			'data' => $table,
+		);
+		return View::loadView('formDB', $data);
+	}
+
+	public static function formSubmit($post = array()){
+		$Model = new MyModel();
+		$Model->db->insert('table1', $post);
+		return Helper::redirect('formdb');
+	}
+
+	public static function formDelete($id){
+		$Model = new MyModel();
+		$Model->db->where('id', $id)->delete('table1');
+//		$Model->db->delete('table1');
+
+		return Helper::redirect('formdb');
+	}
+
 	public static function dbDummy(){
 		$MyModel = new MyModel();
 		for($i=50; $i>0; $i--){
@@ -53,6 +95,11 @@ class PagesController
 					echo 'user was created. Id=' . $id;
 		}
 		return true;
+	}
+
+	// POST туршилт
+	public static function postTest($post = array()){
+		return Helper::redirect('page/'.$post['name']);
 	}
 
 }

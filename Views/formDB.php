@@ -22,16 +22,16 @@
 </head>
 <body>
 
-<h1 class="title">TEST PAGE</h1>
-<p><?php echo "Хуудас " . $total_page . " - " . $page; ?></p>
+<h1 class="title">TEST FORM</h1>
+<code><?php print_r($text); ?></code>
 <ul>
-	<?php foreach ($test as $item) { ?>
-	<li><?php echo $item['id'] . ". " . $item['name'] . " - " . $item['created'] . " - " . $item['modified']; ?></li>
+	<?php foreach ($data as $item) { ?>
+		<li><?php echo $item['id'] . ". " . $item['name'] . " - " . $item['created'] . " - " . $item['modified']; ?> -- <a href="<?php echo \App\System\Helper::url('formdb/delete/'.$item['id']); ?>">Delete</a></li>
 	<?php } ?>
 </ul>
-<form action="<?php echo \App\System\Helper::url('postTest'); ?>" method="post">
-    <input type="text" name="name">
-    <input type="submit" value="Submit">
+<form action="<?php echo \App\System\Helper::url('formdb/submit'); ?>" method="post">
+	<input type="text" name="name">
+	<input type="submit" value="Submit">
 </form>
 </body>
 </html>

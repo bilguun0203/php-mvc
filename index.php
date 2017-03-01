@@ -6,6 +6,8 @@
  * Time: 7:06 PM
  */
 
+session_start();
+
 /**
  * Файлуудын үндсэн байрлал
  */
@@ -16,10 +18,32 @@ define('BASE', __DIR__ . '/');
  * Composer Package
  */
 require BASE . 'vendor/autoload.php';
-// Алдааны мэдээлэл гаргагч
-$whoops = new \Whoops\Run;
-$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
-$whoops->register();
+
+/**
+ * Алдааны мэдээлэл
+ * 		Асаах /Хөгжүүлэлтийн үед тохиромжтой/
+ * 		DEBUG = true
+ *
+ * 		Унтраах /Бүрэн ажиллагаанд орсон үед тохиромжтой/
+ *		DEBUG = false
+ */
+define('DEBUG', true);
+if(DEBUG == true)
+{
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+	error_reporting(E_ALL);
+	// Алдааны мэдээлэл гаргагч
+	$whoops = new \Whoops\Run;
+	$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+	$whoops->register();
+}
+else
+{
+	ini_set('display_errors', 0);
+	ini_set('display_startup_errors', 0);
+	error_reporting(0);
+}
 
 /**
  * Хэрэгцээт файлуудыг унших
@@ -38,6 +62,7 @@ $config = new Config();
  */
 $get = explode('/', str_replace($config->getConfig('base_url'), '', "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"));
 Route::$GET = $get;
+Route::$POST = $_POST;
 
 /**
  * Замчлагчийг ажиллуулах
