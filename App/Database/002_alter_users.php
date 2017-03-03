@@ -10,17 +10,24 @@ namespace App\Database;
 
 use App\Model\Model;
 
+/**
+ * Class Alter_Users
+ * @package App\Database
+ *
+ * Өгөгдлийн санд байгаа хүснэгт засварлах жишээ функц
+ */
+
 class Alter_Users
 {
 
 	public static function up(){
 		$model = new Model();
 		$model->db->table('users')
-			->dropColumn('name')->alterTable();
+			->addColumn()->string('email', 'NOT NULL AFTER username')->alterTable();
 		$model->db->table('users')
-			->addColumn()->string('username', 'NOT NULL AFTER id')->alterTable();
+			->addColumn()->string('password', 'NOT NULL AFTER email')->alterTable();
 		$model->db->table('users')
-			->addColumn()->string('password', 'NOT NULL AFTER username')->alterTable();
+			->addColumn()->string('remember_token', 'NOT NULL AFTER password')->alterTable();
 	}
 
 	public static function down(){
@@ -28,9 +35,9 @@ class Alter_Users
 		$model->db->table('users')
 			->dropColumn('password')->alterTable();
 		$model->db->table('users')
-			->dropColumn('username')->alterTable();
+			->dropColumn('remember_token')->alterTable();
 		$model->db->table('users')
-			->addColumn()->string('name', 'NOT NULL AFTER id')->alterTable();
+			->dropColumn('email')->alterTable();
 	}
 
 }

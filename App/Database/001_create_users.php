@@ -10,25 +10,29 @@ namespace App\Database;
 
 use App\Model\Model;
 
+/**
+ * Class Create_Users
+ * @package App\Database
+ *
+ * Өгөгдлийн санд хүснэгт үүсгэх жишээ класс
+ *
+ */
+
 class Create_Users
 {
 
 	public static function up(){
 		$model = new Model();
-//		echo 'Creating Users Table...<br>';
 		$model->db->table('users')
 			->int('id', 'NOT NULL AUTO_INCREMENT')->primaryKey()
-			->string('name', 'NOT NULL')
+			->string('username', 'NOT NULL')
 			->timestamp()
 			->createTable();
-//		echo 'Users Table Created';
 	}
 
 	public static function down(){
 		$model = new Model();
-//		echo 'Deleting Users Table...<br>';
 		$model->db->table('users')->drop();
-//		echo 'Users Table Dropped';
 	}
 
 }
