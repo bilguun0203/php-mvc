@@ -60,4 +60,42 @@ class Helper
 		}
 	}
 
+	public static function flush($name, $value = ''){
+		if($value == ''){
+			if(isset($_SESSION[$name])) {
+				$flush = $_SESSION[$name];
+				unset($_SESSION[$name]);
+				return $flush;
+			}
+			else {
+				return false;
+			}
+		} else {
+			$_SESSION[$name] = $value;
+			return true;
+		}
+	}
+
+	public static function cookie($name, $value = '', $time = 86400, $path = '', $domain = ''){
+		if($value == ''){
+			if(isset($_COOKIE[$name])) {
+				return $_COOKIE[$name];
+			}
+			else {
+				return false;
+			}
+		} else {
+			if($path != ''){
+				if($domain != '') {
+					setcookie($name, $value, time() + $time, $path, $domain);
+				}
+				else {
+					setcookie($name, $value, time() + $time, $path);
+				}
+			}
+			setcookie($name, $value, time() + $time);
+			return true;
+		}
+	}
+
 }

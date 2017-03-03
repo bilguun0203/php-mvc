@@ -71,6 +71,7 @@ class PagesController
 
 	public static function formSubmit($post = array()){
 		$Model = new MyModel();
+		Helper::flush('post', $post['name']);
 		$Model->db->insert('table1', $post);
 		return Helper::redirect('formdb');
 	}
@@ -100,6 +101,25 @@ class PagesController
 	// POST туршилт
 	public static function postTest($post = array()){
 		return Helper::redirect('page/'.$post['name']);
+	}
+
+	public static function session(){
+		if(Helper::session('counter') == false){
+			Helper::session('counter', 0);
+		}
+		Helper::session('counter', Helper::session('counter')+1);
+		$counter = Helper::session('counter');
+		$flush = Helper::flush('post');
+		if($flush == false){
+			$flush = 'Empty';
+		}
+		Helper::cookie('rand', rand(100, 999),86400,'/','www.dev.local');
+		$cookie = Helper::cookie('rand');
+		return View::loadView('session', array(
+			'counter' => $counter,
+			'flush' => $flush,
+			'cookie' => $cookie,
+		));
 	}
 
 }

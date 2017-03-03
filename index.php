@@ -60,7 +60,7 @@ $config = new Config();
 /**
  * Хаягаас утгуудыг авах
  */
-$get = explode('/', str_replace($config->getConfig('base_url'), '', "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"));
+$get = explode('/', str_replace($config->getConfig('base_url'), '', "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"));
 Route::$GET = $get;
 Route::$POST = $_POST;
 

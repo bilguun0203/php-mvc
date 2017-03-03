@@ -36,4 +36,5 @@ $views = array(
 	Route::get('formdb', 'formDB@PagesController'),
 	Route::get('formdb/delete/{id}', 'formDelete@PagesController'),
 	Route::post('formdb/submit', 'formSubmit@PagesController'),
+	Route::get('session', 'session@PagesController'),
 );
