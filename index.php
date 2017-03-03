@@ -73,8 +73,8 @@ require_once BASE . 'App/Route/web.php';
  * Харагдац гаргах
  */
 $flag = true;
-foreach ($views as $view){
-	if($view != 0){
+foreach ($routes as $route){
+	if($route != 0){
 		$flag = false;
 	}
 }

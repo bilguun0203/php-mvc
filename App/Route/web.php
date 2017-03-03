@@ -24,7 +24,7 @@ use App\System\Route;
  * Route::post(хаяг, контроллер);
  *
  */
-$views = array(
+$routes = array(
 	Route::get('', 'index@Controller'),
 	Route::get('page', 'page@PagesController'),
 	Route::get('page/{id}', 'page@PagesController'),
@@ -38,3 +38,5 @@ $views = array(
 	Route::post('formdb/submit', 'formSubmit@PagesController'),
 	Route::get('session', 'session@PagesController'),
 );
+
+//TODO: Authorization, Locale... Middleware
