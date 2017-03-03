@@ -13,32 +13,23 @@ use App\Model\Model;
 class Create_Migration
 {
 
-	private static $model;
-
-	public function __construct(){
-		self::$model = new Model();
-	}
-
 	public static function up(){
-		self::$model = new Model();
-		echo 'Migration Table Created';
-		self::$model->db->table('migration')
+		$model = new Model();
+//		echo 'Migration Table Created';
+		$model->db->table('migration')
 			->int('id', 'NOT NULL AUTO_INCREMENT')->primaryKey()
 			->string('migration', 'NOT NULL')
+			->char('edit', "DEFAULT '000'", 3)
 			->timestamp()
 			->createTable();
-		echo 'Migration Table Created';
+//		echo 'Migration Table Created';
 	}
 
 	public static function down(){
-		self::$model = new Model();
-		echo 'Migration Table Created';
-		self::$model->db->table('migration')->drop();
-		echo 'Migration Table Dropped';
-	}
-
-	public static function say(){
-		echo "Hi! I'm Create_Migration";
+		$model = new Model();
+//		echo 'Migration Table Created';
+		$model->db->table('migration')->drop();
+//		echo 'Migration Table Dropped';
 	}
 
 }
