@@ -14,6 +14,8 @@ use App\System\Helper;
 class PagesController
 {
 
+	public static $mw_values = null;
+
 	public static function index(){
 		echo "<h1>Pages</h1>";
 	}
@@ -38,6 +40,7 @@ class PagesController
 			'test' => $test,
 			'total_page' => $MyModel->db->totalPages,
 			'page' => $page,
+			'middleware' => self::$mw_values,
 		);
 		return View::loadView('testDB', $data);
 	}

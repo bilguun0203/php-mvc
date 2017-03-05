@@ -18,10 +18,12 @@ use App\System\Route;
  * index@Controller - Controller класс доторх index функцийг дуудна
  *
  * GET
- * Route::get(хаяг, контроллер);
+ * Route::get(string, string, string, array)
+ * Route::get(хаяг, контроллер, дундын код, дундын кодонд ашиглагдах аргументууд);
  *
  * POST
- * Route::post(хаяг, контроллер);
+ * Route::post(string, string, string, array)
+ * Route::post(хаяг, контроллер, дундын код, дундын кодонд ашиглагдах аргументууд);
  *
  */
 $routes = array(
@@ -30,8 +32,8 @@ $routes = array(
 	Route::get('page/{id}', 'page@PagesController'),
 	Route::get('page/{id}/{asd}', 'page@PagesController'),
 	Route::get('db', 'dbDummy@PagesController'),
-	Route::get('testdb', 'pageDB@PagesController'),
-	Route::get('testdb/{page}', 'pageDB@PagesController'),
+	Route::get('testdb', 'pageDB@PagesController', 'Auth', array('test' => 'Test Message')),
+	Route::get('testdb/{page}', 'pageDB@PagesController', 'Auth', array('test' => 'Test Message')),
 	Route::post('postTest', 'postTest@PagesController'),
 	Route::get('formdb', 'formDB@PagesController'),
 	Route::get('formdb/delete/{id}', 'formDelete@PagesController'),

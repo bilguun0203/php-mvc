@@ -33,5 +33,11 @@
     <input type="text" name="name">
     <input type="submit" value="Submit">
 </form>
+
+<code>
+<!--    --><?php //echo $middleware['args']['test']; ?>
+    <?php echo print_r($middleware); ?>
+<!--    --><?php //var_dump($data) ?>
+</code>
 </body>
 </html>

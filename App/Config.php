@@ -25,7 +25,7 @@ class Config {
 			/**
 			 * Вебийн үндсэн хаяг /байрлаж буй хавтас, холбоос/
 			 */
-			'base_url' => 'dev.local/git/php-mvc/',
+			'base_url' => 'http://dev.local/git/php-mvc/',
 
 			/**
 			 * Өгөгдлийн сангийн тохиргоо
