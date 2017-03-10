@@ -110,6 +110,9 @@ class PagesController
 		if(Helper::session('counter') == false){
 			Helper::session('counter', 0);
 		}
+		if(Helper::session('test') == false){
+			Helper::session('test', 'fsSFGSds234rf');
+		}
 		Helper::session('counter', Helper::session('counter')+1);
 		$counter = Helper::session('counter');
 		$flush = Helper::flush('post');

@@ -10,7 +10,7 @@ namespace App\Middleware;
 
 use App\System\Helper;
 
-class Auth
+class Test
 {
 
 	private $args;
@@ -24,10 +24,12 @@ class Auth
 	}
 
 	public function run(){
-		if($this->args == null) {
+		$session = Helper::session('test');
+		if($session==false) {
 			return array(
 				'run' => false,
 				'message' => 'Hello Middleware',
+				'session' => $session,
 			);
 		}
 		else {
@@ -35,6 +37,7 @@ class Auth
 				'run' => true,
 				'message' => 'Hello Middleware',
 				'args' => $this->args,
+				'session' => $session,
 			);
 		}
 	}
