@@ -12,6 +12,8 @@ use App\System\View;
 
 class Controller {
 
+	public static $mw_values = null;
+
 	/**
 	 * Controller constructor.
 	 */
