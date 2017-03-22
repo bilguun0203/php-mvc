@@ -38,7 +38,13 @@ $routes = array(
 	Route::get('formdb', 'formDB@PagesController'),
 	Route::get('formdb/delete/{id}', 'formDelete@PagesController'),
 	Route::post('formdb/submit', 'formSubmit@PagesController'),
-	Route::get('session', 'session@PagesController'),
+	Route::get('session', 'session@PagesController', 'Auth'),
+
+	Route::get('login', 'login@Controller'),
+	Route::get('register', 'register@Controller'),
+	Route::get('logout', 'logout@Controller'),
+	Route::post('authenticate', 'authenticate@Controller'),
+	Route::post('registration', 'registration@Controller'),
 );
 
 //TODO: Authorization, Locale... Middleware

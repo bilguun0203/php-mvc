@@ -9,6 +9,9 @@
 //namespace App\Controller;
 
 use App\System\View;
+use App\Model\MyModel;
+use App\System\Helper;
+use App\Lib\UserAuth;
 
 class Controller {
 
@@ -33,4 +36,65 @@ class Controller {
 		);
 		return View::loadView('welcome', $data);
 	}
+
+	public static function login() {
+		$userAuth = new UserAuth();
+		if(!$userAuth->isloggedin()) {
+			$data = array(
+				'page_title' => 'Login',
+				'section_body' => 'login',
+			);
+			return View::loadView('auth/_main_layout', $data);
+		} else {
+			Helper::redirect('session');
+		}
+	}
+
+	public static function register() {
+		$userAuth = new UserAuth();
+		if(!$userAuth->isloggedin()) {
+			$data = array(
+				'page_title' => 'Register',
+				'section_body' => 'register',
+			);
+			return View::loadView('auth/_main_layout', $data);
+		} else {
+			Helper::redirect('session');
+		}
+	}
+
+	public static function authenticate($user_info = array()){
+		$userAuth = new UserAuth();
+		$remember = false;
+		if(isset($user_info['remember'])){
+			$remember = true;
+		}
+		if($userAuth->login($user_info['email'], $user_info['password'], $remember)){
+			Helper::redirect('session');
+		}
+		else {
+			Helper::flush('error', 'Not Found');
+			Helper::redirect('login');
+		}
+	}
+
+	public static function registration($user_info = array()){
+		$userAuth = new UserAuth();
+		var_dump($user_info);
+//		$userAuth->register($user_info['name'], $user_info['email'], $user_info['password']);
+		if($userAuth->register($user_info['name'], $user_info['email'], $user_info['password'])){
+			Helper::redirect('login');
+		}
+		else {
+//			Helper::flush('error', 'Not Found');
+			Helper::redirect('register');
+		}
+	}
+
+	public static function logout(){
+		$userAuth = new UserAuth();
+		$userAuth->logout();
+		Helper::redirect('login');
+	}
+
 }

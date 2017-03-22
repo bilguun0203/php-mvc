@@ -26,5 +26,6 @@
 <p>Session. Counter: <?php echo $counter; ?></p>
 <p>Flush. Message: <?php echo $flush; ?></p>
 <p>Cookie. : <?php echo $cookie; ?></p>
+<p><a href="<?php echo \App\System\Helper::url('logout');?>">Logout</a></p>
 </body>
 </html>

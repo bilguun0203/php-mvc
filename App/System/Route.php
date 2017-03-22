@@ -108,7 +108,6 @@ class Route
 				$mw = $mwobj->run();
 			}
 			if($mw['run']) {
-				self::$POST;
 				// Тохирох Контроллерийг олох
 				$controller = explode('@', $controller);
 				$C = $controller[1];

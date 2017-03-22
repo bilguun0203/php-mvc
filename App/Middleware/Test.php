@@ -15,9 +15,6 @@ class Test
 
 	private $args;
 
-	/**
-	 * Auth constructor.
-	 */
 	public function __construct($args)
 	{
 		$this->args = $args;

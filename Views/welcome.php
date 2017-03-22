@@ -24,5 +24,8 @@
 
 <h1 class="title"><?php echo $title; ?>!</h1>
 
+<?php echo \App\System\Helper::session('user_id'); ?>
+<?php echo \App\System\Helper::session('user_remember_token'); ?>
+
 </body>
 </html>
